@@ -1,0 +1,6 @@
+DJANGO_SECRET_KEY='django-insecure-#r-%)smt=0#9y*shcf4^v!!d(tvl+9oec-#!w_bzsq(y@4#7-p'
+DEBUG='true'
+NAME='postgres'
+USER='postgres'
+PASSWORD='postgres'
+HOST='db'
