@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     # local 
     'users',
+    'resources',
 ]
 
 MIDDLEWARE = [
@@ -81,13 +82,13 @@ LOGGING = {
         'file_error': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': 'logs/error.log',
+            'filename': BASE_DIR / 'logs/error.log',
             'formatter': 'verbose',
         },
         'file_warning': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
-            'filename': 'logs/warning.log',
+            'filename': BASE_DIR / 'logs/warning.log',
             'formatter': 'verbose',
         },
     },

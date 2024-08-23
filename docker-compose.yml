@@ -1,13 +1,15 @@
 services:
-  web:
-    build: .
-    command: sh -c "python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: sh -c "python backend/manage.py collectstatic --noinput && python backend/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - backend/.env
     depends_on:
       - db
       - redis
@@ -18,8 +20,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
-    env_file:
-      - .env
 
   redis:
     image: redis:7
