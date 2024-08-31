@@ -6,6 +6,9 @@ class Resource(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name='Название')
     image = models.ImageField(upload_to='resources')
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class UserResource(models.Model):
     user = models.ForeignKey(
@@ -14,18 +17,28 @@ class UserResource(models.Model):
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     quantity = models.PositiveBigIntegerField(verbose_name='Количество')
 
+    class Meta:
+        unique_together = ('user', 'resource')
+
 
 class UniqueItem(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name='Название')
     image = models.ImageField(upload_to='unique')
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class UserUniqueItem(models.Model):
     user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name='unique'
+        get_user_model(), on_delete=models.CASCADE, related_name='unique_items'
     )
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    unique_item = models.ForeignKey(UniqueItem, on_delete=models.CASCADE)
     quantity = models.PositiveBigIntegerField(verbose_name='Количество')
+
+    class Meta:
+        unique_together = ('user', 'unique_item')
+
 
 """
 В дальнейшем можно добавить каждому предмету вес выпадения / ценности
