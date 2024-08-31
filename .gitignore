@@ -12,6 +12,9 @@ backend/static/*
 backend/media/resources/*
 !backend/media/resources/.gitkeep
 
+backend/media/unique/*
+!backend/media/unique/.gitkeep
+
 logs/*
 !logs/.gitkeep
 
