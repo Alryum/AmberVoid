@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Resource(models.Model):
@@ -20,11 +21,26 @@ class UserResource(models.Model):
     class Meta:
         unique_together = ('user', 'resource')
 
+    def decrement(self, count):
+        if self.quantity - count < 0:
+            return -1
+        else:
+            self.quantity -= count
+            self.save()
+            
+
 
 class UniqueItem(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name='Название')
     image = models.ImageField(upload_to='unique')
-
+    #Change Validators if need
+    loot_multiplier = models.FloatField(verbose_name='Множитель',
+        default=1,
+        validators=[
+            MinValueValidator(0,5),
+            MaxValueValidator(2),
+        ]
+    )
     def __str__(self) -> str:
         return self.name
 
@@ -35,6 +51,7 @@ class UserUniqueItem(models.Model):
     )
     unique_item = models.ForeignKey(UniqueItem, on_delete=models.CASCADE)
     quantity = models.PositiveBigIntegerField(verbose_name='Количество')
+
 
     class Meta:
         unique_together = ('user', 'unique_item')
