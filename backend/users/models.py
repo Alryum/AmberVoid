@@ -20,7 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return self.nickname
     # TODO: Переделать запросы в базу через prefetch related
-    def decrease_resources(self, resources_to_decrease: Dict[str, Dict[str, int]]):      
+    def decrease_resources(self, resources_to_decrease: Dict[str, int]):      
         with transaction.atomic():
             for item_name, quantity in resources_to_decrease.items():
                 user_resource = self.resources.get(resource__name=item_name)
