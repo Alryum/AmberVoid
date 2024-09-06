@@ -1,7 +1,7 @@
-from typing import List, Dict
+from typing import Dict
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.db.transaction import atomic
+from django.db import transaction
 from .managers import CustomUserManager
 
 
@@ -20,10 +20,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return self.nickname
     # TODO: Переделать запросы в базу через prefetch related
-    def decrease_resources(self, query: List[Dict[str, int]]):      
-        data = query.get('resources')
-        with atomic.transaction():
-            for item_name, quantity in data.items():
+    def decrease_resources(self, resources_to_decrease: Dict[str, Dict[str, int]]):      
+        with transaction.atomic():
+            for item_name, quantity in resources_to_decrease.items():
                 user_resource = self.resources.get(resource__name=item_name)
                 user_resource.decrease_quantity(quantity)
             
